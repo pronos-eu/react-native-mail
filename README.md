@@ -40,7 +40,7 @@ project(':RNMail').projectDir = new File(rootProject.projectDir, '../node_module
 ...
 dependencies {
     ...
-    compile project(':RNMail')
+    implementation project(':RNMail')
 }
 ```
 
@@ -130,11 +130,12 @@ export default class App extends Component {
       bccRecipients: ['supportBCC@example.com'],
       body: '<b>A Bold Body</b>',
       isHTML: true,
-      attachments: [{
-        path: '',  // The absolute path of the file from which to read data.
-        type: '',   // Mime Type: jpg, png, doc, ppt, html, pdf, csv
-        name: '',   // Optional: Custom filename for attachment
-      }]
+      attachments: [
+        {
+          path: '',  // The absolute path of the file from which to read data. (without file://)
+          name: '',   // Optional: Custom filename for attachment, will otherwise use the file name from the path
+        }
+      ]
     }, (error, event) => {
       Alert.alert(
         error,
