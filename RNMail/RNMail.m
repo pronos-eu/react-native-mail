@@ -85,11 +85,16 @@ RCT_EXPORT_METHOD(mail:(NSDictionary *)options
                 }
 
                 // Get the resource path and read the file using NSData
-                NSData *fileData = [NSData dataWithContentsOfFile:filePath];
+                NSError *error = nil;
+                NSData *fileData = [NSData dataWithContentsOfFile:filePath options: 0 error: &error];
+                
+                if (fileData == nil) {
+                    NSLog(@"Failed to read file, error %@", error);
+                }
 
                 // Determine the MIME type
                 NSString *mimeType = @"application/octet-stream";
-
+                
                 // Add attachment
                 [mail addAttachmentData:fileData mimeType:mimeType fileName:fileName];
             }

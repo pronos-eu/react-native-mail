@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.text.Html;
+import android.support.v4.content.FileProvider;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -94,7 +95,12 @@ public class RNMailModule extends ReactContextBaseJavaModule {
         if (attachment.hasKey("path") && !attachment.isNull("path")) {
           String path = attachment.getString("path");
           File file = new File(path);
-          Uri p = Uri.fromFile(file);
+          Uri p = FileProvider.getUriForFile(
+            reactContext,
+            reactContext.getApplicationContext().getPackageName() + ".provider",
+            file
+          );
+
           uris.add(p);
         }
       }
