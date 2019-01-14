@@ -76,9 +76,9 @@ RCT_EXPORT_METHOD(mail:(NSDictionary *)options
                     continue;
                 }
 
-                NSString *attachmentPath = [RCTConvert NSString:options[@"attachment"][@"path"]];
-                NSString *attachmentType = [RCTConvert NSString:options[@"attachment"][@"type"]];
-                NSString *attachmentName = [RCTConvert NSString:options[@"attachment"][@"name"]];
+                NSString *attachmentPath = [RCTConvert NSString:attachment[@"path"]];
+                NSString *attachmentType = [RCTConvert NSString:attachment[@"type"]];
+                NSString *attachmentName = [RCTConvert NSString:attachment[@"name"]];
 
                 // Set default filename if not specificed
                 if (!attachmentName) {
