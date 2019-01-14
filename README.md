@@ -3,6 +3,10 @@
 A React Native wrapper for Apple's ``MFMailComposeViewController`` from iOS and Mail Intent on android
 Supports emails with attachments.
 
+## Changes
+
+Several minor changes and pull-requests from the original repo have been merged. See commit history for details.
+
 
 ## Installation
 
