@@ -86,8 +86,8 @@ public class RNMailModule extends ReactContextBaseJavaModule {
       i.putExtra(Intent.EXTRA_BCC, readableArrayToStringArray(bccRecipients));
     }
 
-    if (options.hasKey("attachment") && !options.isNull("attachment")) {
-      ReadableArray attachments = options.getArray("attachment");
+    if (options.hasKey("attachments") && !options.isNull("attachments")) {
+      ReadableArray attachments = options.getArray("attachments");
       ArrayList<Uri> uris = new ArrayList<Uri>();
       for (int j = 0; j < attachments.size(); j++) {
         ReadableMap attachment = attachments.getMap(j);
