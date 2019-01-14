@@ -77,7 +77,12 @@ RCT_EXPORT_METHOD(mail:(NSDictionary *)options
                 }
 
                 NSString *filePath = [RCTConvert NSString:attachment[@"path"]];
-                NSString *fileName = [[filePath lastPathComponent] stringByDeletingPathExtension];
+                NSString *fileName = [RCTConvert NSString:attachment[@"name"]];
+
+                // Set default filename if not specificed
+                if (!fileName) {
+                    fileName = [[filePath lastPathComponent] stringByDeletingPathExtension];
+                }
 
                 // Get the resource path and read the file using NSData
                 NSData *fileData = [NSData dataWithContentsOfFile:filePath];
