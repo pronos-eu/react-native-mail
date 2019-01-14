@@ -4,9 +4,6 @@ A React Native wrapper for Apple's ``MFMailComposeViewController`` from iOS and 
 Supports emails with attachments.
 
 
-This fork only supports multiple attachments for IOS.
-
-
 ## Installation
 
 There was a breaking change in RN >=40. So for React Native >= 0.40: use v3.x and higher of this lib. otherwise use v2.x
