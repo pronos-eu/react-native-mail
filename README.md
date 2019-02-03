@@ -3,6 +3,11 @@
 A React Native wrapper for Apple's ``MFMailComposeViewController`` from iOS and Mail Intent on android
 Supports emails with attachments.
 
+## Changes
+
+Several minor changes and pull-requests from the original repo have been merged. See commit history for details.
+
+
 ## Installation
 
 There was a breaking change in RN >=40. So for React Native >= 0.40: use v3.x and higher of this lib. otherwise use v2.x
@@ -35,7 +40,7 @@ project(':RNMail').projectDir = new File(rootProject.projectDir, '../node_module
 ...
 dependencies {
     ...
-    compile project(':RNMail')
+    implementation project(':RNMail')
 }
 ```
 
@@ -125,11 +130,12 @@ export default class App extends Component {
       bccRecipients: ['supportBCC@example.com'],
       body: '<b>A Bold Body</b>',
       isHTML: true,
-      attachment: {
-        path: '',  // The absolute path of the file from which to read data.
-        type: '',   // Mime Type: jpg, png, doc, ppt, html, pdf, csv
-        name: '',   // Optional: Custom filename for attachment
-      }
+      attachments: [
+        {
+          path: '',  // The absolute path of the file from which to read data. (without file://)
+          name: '',   // Optional: Custom filename for attachment, will otherwise use the file name from the path
+        }
+      ]
     }, (error, event) => {
       Alert.alert(
         error,

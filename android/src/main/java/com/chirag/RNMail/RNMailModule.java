@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.text.Html;
+import android.support.v4.content.FileProvider;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -15,6 +16,7 @@ import com.facebook.react.bridge.Callback;
 
 import java.util.List;
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * NativeModule that allows JS to open emails sending apps chooser.
@@ -54,8 +56,9 @@ public class RNMailModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void mail(ReadableMap options, Callback callback) {
     Intent i;
-    if (options.hasKey("attachment") && !options.isNull("attachment")) {
-      i = new Intent(Intent.ACTION_SEND);
+
+    if (options.hasKey("attachments") && !options.isNull("attachments")) {
+      i = new Intent(Intent.ACTION_SEND_MULTIPLE);
       i.setType("vnd.android.cursor.dir/email");
     } else {
       i = new Intent(Intent.ACTION_SENDTO);
@@ -90,18 +93,28 @@ public class RNMailModule extends ReactContextBaseJavaModule {
       i.putExtra(Intent.EXTRA_BCC, readableArrayToStringArray(bccRecipients));
     }
 
-    if (options.hasKey("attachment") && !options.isNull("attachment")) {
-      ReadableMap attachment = options.getMap("attachment");
-      if (attachment.hasKey("path") && !attachment.isNull("path")) {
-        String path = attachment.getString("path");
-        File file = new File(path);
-        Uri p = Uri.fromFile(file);
-        i.putExtra(Intent.EXTRA_STREAM, p);
+    if (options.hasKey("attachments") && !options.isNull("attachments")) {
+      ReadableArray attachments = options.getArray("attachments");
+      ArrayList<Uri> uris = new ArrayList<Uri>();
+      for (int j = 0; j < attachments.size(); j++) {
+        ReadableMap attachment = attachments.getMap(j);
+        if (attachment.hasKey("path") && !attachment.isNull("path")) {
+          String path = attachment.getString("path");
+          File file = new File(path);
+          Uri p = FileProvider.getUriForFile(
+            reactContext,
+            reactContext.getApplicationContext().getPackageName() + ".provider",
+            file
+          );
+
+          uris.add(p);
+        }
       }
+      i.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
     }
 
     PackageManager manager = reactContext.getPackageManager();
-    List<ResolveInfo> list = manager.queryIntentActivities(i, 0);
+    List<ResolveInfo> list = manager.queryIntentActivities(i, PackageManager.MATCH_ALL);
 
     if (list == null || list.size() == 0) {
       callback.invoke("not_available");
